@@ -7,6 +7,7 @@ Deal with fprobe related function
 from moviepy.editor import VideoFileClip
 import os
 import pdb
+from datetime import datetime as dt
 
 
 class SilenceTrimmer:
@@ -17,6 +18,7 @@ class SilenceTrimmer:
         thresh_max=0.1,
         thresh_duration=0.05,
         thread_nb=3,
+        out_name="out"
     ):
         """
         Enter a threshold value and duration (in seconds 1.3)
@@ -27,6 +29,7 @@ class SilenceTrimmer:
         self.tmax = thresh_max
         self.tdur = thresh_duration
         self.thread_nb = thread_nb
+        self.oname = out_name
 
     def cut_silence(self, start: float, end: float) -> bool:
         "go to next chunk"
@@ -67,7 +70,10 @@ class SilenceTrimmer:
         dname = os.path.dirname(self.path)
         ext = os.path.basename(self.path).split(".").pop()
         # pdb.set_trace()
-        spath = os.path.join(dname, "out.mp4")
+        date = dt.today()
+        fmt = date.strftime("%Y-%m-%d-%H-%M-%S-%f")
+        sname = "out-" + fmt + ".mp4"
+        spath = os.path.join(dname, sname)
         self.cpv.write_videofile(spath, threads=self.thread_nb)
 
     def trim(self):

@@ -4,6 +4,7 @@
 from trim import SilenceTrimmer
 
 import argparse
+import sys
 
 
 def parseMainArg():
@@ -29,6 +30,7 @@ if __name__ == "__main__":
     tmax = args.tmax
     tdur = args.tdur
     thread = args.thread
+    sys.setrecursionlimit(10000)
     if not thread:
         thread = 3
     if not tmax:
@@ -38,8 +40,8 @@ if __name__ == "__main__":
     trimmer = SilenceTrimmer(
         path,
         # tmin,
-        tmax,
-        tdur,
-        thread,
+        thresh_max=tmax,
+        thresh_duration=tdur,
+        thread_nb=thread,
     )
     trimmer.trim()
