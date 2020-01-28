@@ -15,20 +15,20 @@ called `out.mp4`.
 Here are the available options:
 
 ```
-usage: byeframe.py [-h] [--tmax TMAX] [--tdur TDUR]
-                   [--thread THREAD]
+usage: byeframe.py [-h] [--tmax TMAX] [--tdur TDUR] [--thread THREAD]
+                   [--splitNb SPLITNB]
                    path
 
 positional arguments:
-  path             Path to video file [home/usr/foo.mp4]
+  path               Path to video file [home/usr/foo.mp4]
 
 optional arguments:
-  -h, --help       show this help message and exit
-  --tmax TMAX      maximum threshold for sound [0.1 by default]
-  --tdur TDUR      duration in seconds for threshold for sound [0.05 by
-                   default]
-  --thread THREAD  use multiple thread [3 by default]
-
+  -h, --help         show this help message and exit
+  --tmax TMAX        maximum threshold for sound [0.1 by default]
+  --tdur TDUR        duration in seconds for threshold for sound [0.05 by
+                     default]
+  --thread THREAD    use multiple thread [3 by default]
+  --splitNb SPLITNB  split video to nb parts
 ```
 
 ## Dev Usage
