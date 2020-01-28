@@ -28,7 +28,7 @@ optional arguments:
   --tdur TDUR        duration in seconds for threshold for sound [0.05 by
                      default]
   --thread THREAD    use multiple thread [3 by default]
-  --splitNb SPLITNB  split video to nb parts
+  --splitNb SPLITNB  split video to nb parts. Necessary for large videos
 ```
 
 ## Dev Usage
