@@ -31,6 +31,9 @@ optional arguments:
   --splitNb SPLITNB  split video to nb parts. Necessary for large videos
 ```
 
+For an efficient split pipeline, calculate each part as roughly about 10
+seconds.
+
 ## Dev Usage
 
 Everything you need for trimming videos is in `trim.py`, if you'd like 
