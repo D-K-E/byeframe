@@ -18,7 +18,7 @@ class SilenceTrimmer:
         thresh_max=0.1,
         thresh_duration=0.05,
         thread_nb=3,
-        out_name="out"
+        out_name="out",
     ):
         """
         Enter a threshold value and duration (in seconds 1.3)
@@ -30,6 +30,7 @@ class SilenceTrimmer:
         self.tdur = thresh_duration
         self.thread_nb = thread_nb
         self.oname = out_name
+        self.spath = ""
 
     def cut_silence(self, start: float, end: float) -> bool:
         "go to next chunk"
@@ -65,6 +66,10 @@ class SilenceTrimmer:
                 counter = send
             # pdb.set_trace()
 
+    def overwrite_clip(self):
+        "overwrite the given clip path"
+        self.cpv.write_videofile(self.path, threads=self.thread_nb)
+
     def save_clip(self) -> None:
         "save clip to path"
         dname = os.path.dirname(self.path)
@@ -73,8 +78,8 @@ class SilenceTrimmer:
         date = dt.today()
         fmt = date.strftime("%Y-%m-%d-%H-%M-%S-%f")
         sname = "out-" + fmt + ".mp4"
-        spath = os.path.join(dname, sname)
-        self.cpv.write_videofile(spath, threads=self.thread_nb)
+        self.spath = os.path.join(dname, sname)
+        self.cpv.write_videofile(self.spath, threads=self.thread_nb, preset="fast")
 
     def trim(self):
         "trim and save the clip"

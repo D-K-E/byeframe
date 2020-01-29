@@ -2,6 +2,7 @@
 # license: see, LICENSE
 
 from trim import SilenceTrimmer
+from split import Splitter
 
 import argparse
 import sys
@@ -20,7 +21,29 @@ def parseMainArg():
         type=float,
     )
     parser.add_argument("--thread", help="use multiple thread [3 by default]", type=int)
+    parser.add_argument("--splitNb", help="split video to nb parts", type=int)
     return parser.parse_args()
+
+
+def split_pipeline(path, tmax, tdur, thread, split_part: int):
+    "split pipeline"
+    splitter = Splitter(nb_parts=split_part, clip_path=path)
+    print("my pipeline")
+    splitter.split_clip()
+    dcopy = splitter.vid_index.copy()
+    for index, npath in splitter.vid_index.items():
+        trimmer = SilenceTrimmer(
+            npath,
+            # tmin,
+            thresh_max=tmax,
+            thresh_duration=tdur,
+            thread_nb=thread,
+        )
+        trimmer.trim()
+        dcopy[index] = trimmer.spath
+    splitter.vid_index = dcopy
+    merged_video = splitter.merge_subclips()
+    splitter.save_clip(merged_video, thread)
 
 
 if __name__ == "__main__":
@@ -30,6 +53,7 @@ if __name__ == "__main__":
     tmax = args.tmax
     tdur = args.tdur
     thread = args.thread
+    splitnb = args.splitNb
     sys.setrecursionlimit(10000)
     if not thread:
         thread = 3
@@ -37,11 +61,15 @@ if __name__ == "__main__":
         tmax = 0.1
     if not tdur:
         tdur = 0.05
-    trimmer = SilenceTrimmer(
-        path,
-        # tmin,
-        thresh_max=tmax,
-        thresh_duration=tdur,
-        thread_nb=thread,
-    )
-    trimmer.trim()
+    if splitnb:
+        split_pipeline(path, tmax, tdur, thread, splitnb)
+    else:
+        trimmer = SilenceTrimmer(
+            path,
+            # tmin,
+            thresh_max=tmax,
+            thresh_duration=tdur,
+            thread_nb=thread,
+        )
+        trimmer.trim()
+    print("Done!")
